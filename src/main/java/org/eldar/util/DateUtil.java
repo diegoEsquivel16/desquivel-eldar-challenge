@@ -13,6 +13,7 @@ public class DateUtil {
     public static Integer getCurrentMonth(){
         return getCurrentTime(Calendar.MONTH)+1;
     }
+    //Aca hago un +1 porque los meses que me retornan van del 0 al 11
 
     public static Integer getCurrentDay(){
         return getCurrentTime(Calendar.DAY_OF_MONTH);
@@ -51,5 +52,6 @@ public class DateUtil {
     public static String getStringDate(Date date){
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         return formatter.format(date);
-    }
+    } //Dejo de manera hardcodeada este formato por simplicidad de lectura, en caso de ser necesario esto puede
+    //quedar parametrizado
 }

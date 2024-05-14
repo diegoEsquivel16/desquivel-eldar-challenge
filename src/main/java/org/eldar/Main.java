@@ -63,7 +63,7 @@ public class Main {
 
     private static void executeChallenge4(CreditCardService service) {
         System.out.println("_Primero probamos con una misma tarjeta:");
-        System.out.println(service.compareCreditCard(validCreditCardAmex, validCreditCardAmex));
+        System.out.println(service.compareCreditCard(validCreditCardAmex, validCreditCardAmex2));
         System.out.println("_Luego probamos con dos tarjetas distintas:");
         System.out.println(service.compareCreditCard(validCreditCardNara, expiredCreditCardAmex));
     }
@@ -109,6 +109,9 @@ public class Main {
             Brand.NARA, "1111222233333456", "aName2", "aLastname2",
             DateUtil.getPreviousMonth(), DateUtil.getCurrentYear());
     private static final CreditCard validCreditCardAmex = CreditCardCreator.createCreditCard(
+            Brand.AMEX, "1111222233337890", "aName3", "aLastname3",
+            DateUtil.getNextMonth(), DateUtil.getNextYear());
+    private static final CreditCard validCreditCardAmex2 = CreditCardCreator.createCreditCard(
             Brand.AMEX, "1111222233337890", "aName3", "aLastname3",
             DateUtil.getNextMonth(), DateUtil.getNextYear());
     private static final CreditCard expiredCreditCardAmex = CreditCardCreator.createCreditCard(
