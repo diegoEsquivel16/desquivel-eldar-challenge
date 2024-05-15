@@ -217,7 +217,7 @@ De esta manera ahora la funcion retorna el valor del campo Salary dentro de la v
 
 ## Ejercicio 5
 
-Para poder ejecutar este ejercicio se tiene que ejecutar la clase MainEjercicio5.
+Para poder ejecutar este ejercicio se tiene que ejecutar la clase org.eldar.MainEjercicio5.
 
 El mismo es bastante sencillo y directo.
 Tengo un metodo que joinea los string de un array recibido por parametro. El main llama a este metodo con un
