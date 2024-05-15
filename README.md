@@ -6,7 +6,7 @@ Aca deje anotaciones que me parecieron pertinentes para el entendimiento de mi s
 
 ## Ejercicio 1
 
-Para poder ver los resultados de este ejercicio lo que se tiene que hacer es ejecutar la clase Main.
+Para poder ver los resultados de este ejercicio lo que se tiene que hacer es ejecutar la clase MainEjercicio1.
 En la misma se va a mostrar por consola el paso a paso de los distintos puntos para este ejercicio, ejecutando distintos casos.
 
 Me parece pertinente aclarar que si bien estoy mostrando por consola informacion sensible como datos de tarjetas de credito.
@@ -158,3 +158,74 @@ A continuacion dejo algunos ejemplos de pegadas locales y sus distintos resultad
           "error": "Invalid Brand: MASTER"
         }
 
+## Ejercicio 3
+
+Consulta PL/SQL
+
+Dada una tabla de empleados con 107 registros y la consulta:
+
+        DECLARE
+            CURSOR exp_cur IS
+            SELECT first_name FROM employees; 
+            TYPE nt_fName IS TABLE OF VARCHAR2(20);
+            fname nt_fName;
+        BEGIN
+            OPEN exp_cur;
+                FETCH exp_cur BULK COLLECT INTO fname LIMIT 10;
+            CLOSE exp_cur;
+            FOR idx IN 1 .. fname.COUNT
+            LOOP
+                DBMS_OUTPUT.PUT_LINE (idx||''||fname(idx) );
+            END LOOP;
+        END;
+
+El resultado del mismo imprime 10 registros.
+
+Esto se debe a que en la parte donde se hace el fetch
+        
+        FETCH exp_cur BULK COLLECT INTO fname LIMIT 10;
+
+Se pone un limite de 10 registros al final en la consulta al cursor "exp_cur"
+que arriba se declaro que utilizaba la tabla "employees"
+
+## Ejercicio 4
+
+Teniendo la siguiente funcion
+        
+        Create or Replace function Get_salary(P_Emp_id Number) Return Number As
+        L_salary Number;
+        Begin
+        Select Salary into L_salary from Employees where employee_id = P_Emp_Id;
+        End Get_salary;
+
+Lo cierto es que no va a compilar porque le falta un "RETURN" luego de hacer el SELECT.
+Podria arreglarse y quedaria de la siguiente manera:
+    
+    CREATE OR REPLACE function Get_salary
+        (P_Emp_id Number) 
+        RETURN Number 
+    AS
+        L_salary Number;
+    BEGIN
+        SELECT Salary INTO L_salary
+            FROM Employees
+            WHERE employee_id = P_Emp_Id;
+        RETURN L_salary;
+    END Get_salary;
+
+De esta manera ahora la funcion retorna el valor del campo Salary dentro de la variable L_salary.
+
+## Ejercicio 5
+
+Para poder ejecutar este ejercicio se tiene que ejecutar la clase MainEjercicio5.
+
+El mismo es bastante sencillo y directo.
+Tengo un metodo que joinea los string de un array recibido por parametro. El main llama a este metodo con un
+array propio antes definido con 3 Strings distintos
+
+Lo que hace el metodo de join es:
+- Primero creo un Stream con el array recibido como parametro, esto me permite ejecutar funciones de orden superior con
+    mayor facilidad.
+- Luego mapeo cada elemento del stream transformando cada valor al mismo string pero en formato Lower Case.
+- Luego colecciono el array informando que tengo que fusionar cada valor, y que cada valor esté separado por un espacio " ".
+- Finalmente termino teniendo como resultado un String con todos los campos que tenia el array, pasados a Lower Case y separados por un espacio.

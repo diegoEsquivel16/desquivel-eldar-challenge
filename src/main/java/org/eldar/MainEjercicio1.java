@@ -8,7 +8,7 @@ import org.eldar.service.CreditCardService;
 import org.eldar.util.CreditCardCreator;
 import org.eldar.util.DateUtil;
 
-public class Main {
+public class MainEjercicio1 {
 
     public static void main(String[] args) {
         System.out.println("-Ahora se van a mostrar los resultados de distintas operaciones para el Challenge Java Backend.");
