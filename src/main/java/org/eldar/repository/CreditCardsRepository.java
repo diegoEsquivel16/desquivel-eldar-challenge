@@ -2,10 +2,12 @@ package org.eldar.repository;
 
 import org.eldar.exception.CreditCardRepositoryException;
 import org.eldar.model.CreditCard;
+import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Repository
 public class CreditCardsRepository {
 
     Map<String, CreditCard> creditCards = new HashMap<>();

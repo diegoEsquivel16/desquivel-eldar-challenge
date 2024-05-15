@@ -8,9 +8,12 @@ import org.eldar.model.CreditCard;
 import org.eldar.repository.CreditCardsRepository;
 import org.eldar.util.CreditCardCreator;
 import org.eldar.util.DateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
 
+@Service
 public class CreditCardService {
 
     private final Integer MAX_OPERATION_VALUE = 1000;
@@ -19,6 +22,7 @@ public class CreditCardService {
 
     private final CreditCardsRepository repository;
 
+    @Autowired
     public CreditCardService(CreditCardsRepository repository) {
         this.repository = repository;
     }
@@ -90,7 +94,8 @@ public class CreditCardService {
     public Double calculateInterestRateForOperation(Integer operationValue, Brand brand) throws InvalidOperationException {
         this.validateOperation(operationValue);
         Double brandInterestRate = brand.calculateInterestRate();
+        Double limitedInterestRate = Double.min(MAX_INTEREST_RATE, Double.max(MIN_INTEREST_RATE, brandInterestRate));
 
-        return Double.min(MAX_INTEREST_RATE, Double.max(MIN_INTEREST_RATE, brandInterestRate));
+        return operationValue * limitedInterestRate;
     }
 }

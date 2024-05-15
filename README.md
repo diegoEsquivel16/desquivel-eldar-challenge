@@ -28,6 +28,8 @@ Para el segundo challenge cree un metodo que recibe el valor de la operacion y h
 un string con el resultado de la validacion, aca no tiro exception ya que quiero saber qué resultado dio la validacion.
 Existe otro metodo donde hago la validacion y si no pasa, tira exception. Este ultimo metodo lo uso en el ultimo challenge
 donde habla de manejo de errores.
+
+
 El valor maximo permitido para operar lo deje en una variable del service por simplicidad. Este campo podria definirse por
 ambiente en caso de tener distintos ambientes posibles, entonces si llega a ser el caso este campo se puede asignar sacando
 el valor de un archivo .properties en caso de que se use Spring.
@@ -45,8 +47,114 @@ Para el quinto challenge utilizo la validacion del limite de la operacion para h
 haya alguna validacion que no pase lo catcheo y muestro por pantalla el error que surgió. Como en este caso hay solo una 
 validacion puede que parezca innecesario tener un enum con las posibles causas de operaciones invalidas, pero de esta manera
 dejo abierta la posibilidad de agregar validaciones para esta operacion.
+
 Tambien al hacer el calculo de la tasa de interes lo que hago es delegarle a cada marca que haga su propio calculo de la tasa
 (haciendo uso tambien del util DateUtil) y luego de obtener la tasa que me devolvio la marca me aseguro de no salirme del rango
 establecido (entre el 0.3% y el 5%) comparando el resultado obtenido con un valor maximo y minimo definido en otros campos.
 Al igual que con el valor maximo permitido para operar están harcodeados por simplicidad pero los mismos pueden ser definidos
 en un archivo .properties.
+
+
+## Ejercicio 2
+
+El servicio cuenta con una API de un solo metodo GET. 
+Levanta localmente en el puerto 8080.
+
+El mismo se comporta como el quinto challenge anterior, o sea que recibe un Brand y un valor para la operacion, y retorna
+el valor de la tasa de operacion para dichos parametros:
+
+        "/eldar_challenge/interest_rate?operation_value=<valor de la operacion>&brand=<marca de la tarjeta>"
+
+El parametro 'operation_value' es un numero entero que acepta los valores entre 0 y 1000. Cualquier valor fuera de rango
+se retorna un 404 BAD REQUEST con un mensaje indicando el error.
+
+El parametro 'brand' es un string que indica la marca de la tarjeta a consultar. El mismo puede ser VISA, NARA y AMEX.
+Cualquier otro valor que se reciba en la marca se retorna un 404 BAD REQUEST con un mensaje indicando el error.
+
+Ambos parametros son necesarios, en caso de no recibir alguno de los dos se retorna un 404 BAD REQUEST.
+
+En caso de que no haya error se recibe como respuesta un json como el siguiente:
+
+        {
+            "interest_rate": <resultado del calculo, numero tipo Double>
+        }
+
+A continuacion dejo algunos ejemplos de pegadas locales y sus distintos resultados:
+
+- Request con una operacion de 100 con la tarjeta VISA:
+
+        curl --location 'http://localhost:8080/eldar_challenge/interest_rate?operation_value=100&brand=VISA'
+ 
+- Respuesta 200 OK:
+        
+        {
+            "interest_rate": 480.0
+        }
+
+- Request con una opearcion de 100 con la tarjeta NARA: 
+    
+        curl --location 'http://localhost:8080/eldar_challenge/interest_rate?operation_value=100&brand=NARA'
+
+- Respuesta 200 OK:
+
+        {
+            "interest_rate": 500.0
+        }
+
+- Request con una operacion de 100 con la tarjeta AMEX:
+
+        curl --location 'http://localhost:8080/eldar_challenge/interest_rate?operation_value=100&brand=AMEX'
+
+- Respuesta 200 OK:
+
+        {
+            "interest_rate": 50.0
+        }
+
+- Request sin pasarle la marca:
+        
+        curl --location 'http://localhost:8080/eldar_challenge/interest_rate?operation_value=100'
+
+- Respuesta 400 BAD REQUEST:
+        
+        {
+          "timestamp": 1715747653665,
+          "status": 400,
+          "error": "Bad Request",
+          "message": "Required String parameter 'brand' is not present",
+          "path": "/eldar_challenge/interest_rate"
+        }
+
+- Request sin pasarle el valor de la operacion:
+
+        curl --location 'http://localhost:8080/eldar_challenge/interest_rate?brand=AMEX'
+
+- Respuesta 400 BAD REQUEST:
+
+        {
+          "timestamp": 1715747765765,
+          "status": 400,
+          "error": "Bad Request",
+          "message": "Required Integer parameter 'operation_value' is not present",
+          "path": "/eldar_challenge/interest_rate"
+        }
+
+- Request con un valor de operacion fuera de rango:
+
+        curl --location 'http://localhost:8080/eldar_challenge/interest_rate?operation_value=10000&brand=AMEX'
+
+- Respuesta 400 BAD REQUEST:
+
+        {
+          "error": "The operation is invalid! Caused by: The import of the operation is out of range"
+        }
+
+- Request con una marca inexistente:
+
+        curl --location 'http://localhost:8080/eldar_challenge/interest_rate?operation_value=10&brand=MASTER'
+- Respuesta 400 BAD REQUEST:
+
+        {
+          "error": "Invalid Brand: MASTER"
+        }
+

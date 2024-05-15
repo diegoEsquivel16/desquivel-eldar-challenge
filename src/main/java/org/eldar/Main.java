@@ -70,11 +70,11 @@ public class Main {
 
     private static void executeChallenge5(CreditCardService service) {
         try {
-            System.out.println("_Primero probamos el camino feliz donde probamos con una tarjeta VISA y operacion valida:");
+            System.out.println("_Primero probamos el camino feliz donde probamos con una tarjeta VISA y operacion de 100:");
             System.out.println(service.calculateInterestRateForOperation(VALID_OPERATION_VALUE, Brand.VISA));
-            System.out.println("_Luego con una operacion valida y una tarjeta NARA:");
+            System.out.println("_Luego con una operacion de 100 y una tarjeta NARA:");
             System.out.println(service.calculateInterestRateForOperation(VALID_OPERATION_VALUE, Brand.NARA));
-            System.out.println("_Y por ultimo con una operacion valida y una tarjeta AMEX:");
+            System.out.println("_Y por ultimo con una operacion de 100 y una tarjeta AMEX:");
             System.out.println(service.calculateInterestRateForOperation(VALID_OPERATION_VALUE, Brand.AMEX));
         } catch (InvalidOperationException ioe) {
             System.out.println("Ups... Algo salió mal en la demo :S");
@@ -119,7 +119,7 @@ public class Main {
             DateUtil.getPreviousMonth(), DateUtil.getPreviousYear());
     private static final String INVALID_CREDIT_CARD_NUMBER = "9999999999999999";
 
-    private static final Integer VALID_OPERATION_VALUE = 800;
+    private static final Integer VALID_OPERATION_VALUE = 100;
     private static final Integer INVALID_OPERATION_VALUE = 2000;
 
 }
